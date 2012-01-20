@@ -99,6 +99,12 @@ public class AnalysisGroup implements Serializable {
     private List<AnalysisListing> allAnalyses;
 
     /**
+     * The analyses that are contained in this analysis group and all of its descendents and are not marked as deleted.
+     */
+    @Transient
+    private List<AnalysisListing> allActiveAnalyses;
+
+    /**
      * @return the list of analyses.
      */
     public List<AnalysisListing> getAnalyses() {
@@ -176,7 +182,7 @@ public class AnalysisGroup implements Serializable {
     }
 
     /**
-     * @return the list of all analyses in this analysis groups and all of its descendents.
+     * @return the list of all analyses in this analysis group and all of its descendents.
      */
     public List<AnalysisListing> getAllAnalyses() {
         if (allAnalyses == null) {
@@ -186,7 +192,7 @@ public class AnalysisGroup implements Serializable {
     }
 
     /**
-     * Loads the list of all analyses in this analysis groups and all of its descendents.
+     * Loads the list of all analyses in this analysis group and all of its descendents.
      */
     private void loadAllAnalyses() {
         List<AnalysisListing> result = new ArrayList<AnalysisListing>();
@@ -195,5 +201,28 @@ public class AnalysisGroup implements Serializable {
             result.addAll(subgroup.getAllAnalyses());
         }
         allAnalyses = result;
+    }
+
+    /**
+     * @return the list of non-deleted analyses in this analysis group and all of its descendents.
+     */
+    public List<AnalysisListing> getAllActiveAnalyses() {
+        if (allActiveAnalyses == null) {
+            loadAllActiveAnalyses();
+        }
+        return allActiveAnalyses;
+    }
+
+    /**
+     * Loads the list of all non-deleted analyses in this analysis group and all of its descendents.
+     */
+    private void loadAllActiveAnalyses() {
+        List<AnalysisListing> result = new ArrayList<AnalysisListing>();
+        for (AnalysisListing analysis : getAllAnalyses()) {
+            if (!analysis.isDeleted()) {
+                result.add(analysis);
+            }
+        }
+        allActiveAnalyses = result;
     }
 }

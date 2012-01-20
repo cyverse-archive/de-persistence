@@ -89,6 +89,18 @@ public class AnalysisListing implements Serializable {
     private long stepCount;
 
     /**
+     * True if the analysis has been marked as deleted.
+     */
+    @Column(name = "deleted")
+    private boolean deleted;
+
+    /**
+     * True if the analysis has been marked as disabled.
+     */
+    @Column(name = "disabled")
+    private boolean disabled;
+
+    /**
      * The list of deployed components used by the analysis.
      */
     @OneToMany(mappedBy = "analysisId")
@@ -180,6 +192,20 @@ public class AnalysisListing implements Serializable {
     }
 
     /**
+     * @return true if this analysis has been deleted.
+     */
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    /**
+     * @return true if this analysis has been disabled by an administrator.
+     */
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -215,6 +241,7 @@ public class AnalysisListing implements Serializable {
         return "AnalysisListing{" + "hid=" + hid + ", id=" + id + ", name=" + name + ", description=" + description
                 + ", integratorName=" + integratorName + ", integratorEmail=" + integratorEmail + ", integrationDate="
                 + integrationDate + ", wikiUrl=" + wikiUrl + ", averageRating=" + averageRating + ", isPublic="
-                + isPublic + ", stepCount=" + stepCount + ", deployedComponents=" + deployedComponents + '}';
+                + isPublic + ", stepCount=" + stepCount + ", deleted=" + deleted + ", disabled=" + disabled
+                + ", deployedComponents=" + deployedComponents + '}';
     }
 }
