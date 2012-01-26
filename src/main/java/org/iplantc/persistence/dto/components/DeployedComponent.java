@@ -154,8 +154,8 @@ public class DeployedComponent implements RepresentableAsJson, NamedAndUnique, S
     /**
      * @return the object identifier used in the database.
      */
-    @SequenceGenerator(name = "data_formats_id_seq", sequenceName = "data_formats_id_seq")
-    @GeneratedValue(generator = "data_formats_id_seq")
+    @SequenceGenerator(name = "deployed_component_id_seq", sequenceName = "deployed_component_id_seq")
+    @GeneratedValue(generator = "deployed_component_id_seq")
     @Id
     public long getHid() {
         return hid;
