@@ -174,10 +174,7 @@ public class AnalysisGroup implements Serializable {
      * Calculates the number of analyses in this analysis group.
      */
     private void calculateAnalysisCount() {
-        int count = analyses.size();
-        for (AnalysisGroup subgroup : subgroups) {
-            count += subgroup.getAnalysisCount();
-        }
+        int count = getAllActiveAnalyses().size();
         analysisCount = Integer.valueOf(count);
     }
 
