@@ -241,6 +241,10 @@ public class AnalysisGroup implements Serializable {
 
         List<AnalysisListing> result = queryFilter.list();
 
+        for (AnalysisListing analysis : result) {
+            analysis.addAnalysisGroup(this);
+        }
+
         for (AnalysisGroup subgroup : subgroups) {
             subgroup.filterAllAnalysesByNameOrDesc(session, search);
 
