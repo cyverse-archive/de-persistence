@@ -14,6 +14,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 /**
  * Contains the information required to represent an analysis group in the analysis listing services.
@@ -221,5 +223,30 @@ public class AnalysisGroup implements Serializable {
             }
         }
         allActiveAnalyses = result;
+    }
+
+    /**
+     * Loads the list of all analyses in this analysis group, and all of its
+     * descendants, filtered by names or descriptions that match the given
+     * search string.
+     */
+    public void filterAllAnalysesByNameOrDesc(Session session, String search) {
+        String filter = "where "
+                        + "lower(this.name) like '%' || lower(:search) || '%'"
+                        + " OR "
+                        + "lower(this.description) like '%' || lower(:search) || '%'";
+
+        Query queryFilter = session.createFilter(analyses, filter);
+        queryFilter.setParameter("search", search);
+
+        List<AnalysisListing> result = queryFilter.list();
+
+        for (AnalysisGroup subgroup : subgroups) {
+            subgroup.filterAllAnalysesByNameOrDesc(session, search);
+
+            result.addAll(subgroup.getAllAnalyses());
+        }
+
+        allAnalyses = result;
     }
 }
