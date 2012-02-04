@@ -226,9 +226,10 @@ public class AnalysisGroup implements Serializable {
     }
 
     /**
-     * Loads the list of all analyses in this analysis group, and all of its
-     * descendants, filtered by names or descriptions that match the given
-     * search string.
+     * Retrieves a list of analyses in this analysis group, filtered by names or
+     * descriptions that match the given search string.
+     *
+     * @return The filtered list of AnalysisListing models.
      */
     public List<AnalysisListing> filterAnalysesByNameOrDesc(Session session, String search) {
         String filter = "where "
