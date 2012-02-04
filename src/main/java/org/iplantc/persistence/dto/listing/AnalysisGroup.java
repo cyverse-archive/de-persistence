@@ -230,7 +230,7 @@ public class AnalysisGroup implements Serializable {
      * descendants, filtered by names or descriptions that match the given
      * search string.
      */
-    public void filterAllAnalysesByNameOrDesc(Session session, String search) {
+    public List<AnalysisListing> filterAnalysesByNameOrDesc(Session session, String search) {
         String filter = "where "
                         + "lower(this.name) like '%' || lower(:search) || '%'"
                         + " OR "
@@ -239,18 +239,6 @@ public class AnalysisGroup implements Serializable {
         Query queryFilter = session.createFilter(analyses, filter);
         queryFilter.setParameter("search", search);
 
-        List<AnalysisListing> result = queryFilter.list();
-
-        for (AnalysisListing analysis : result) {
-            analysis.addAnalysisGroup(this);
-        }
-
-        for (AnalysisGroup subgroup : subgroups) {
-            subgroup.filterAllAnalysesByNameOrDesc(session, search);
-
-            result.addAll(subgroup.getAllAnalyses());
-        }
-
-        allAnalyses = result;
+        return queryFilter.list();
     }
 }
