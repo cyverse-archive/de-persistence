@@ -1,10 +1,16 @@
 package org.iplantc.persistence.dto.listing;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Contains the information required to represent an analysis in the analysis listing services.
@@ -102,12 +108,6 @@ public class AnalysisListing implements Serializable {
     private List<DeployedComponentListing> deployedComponents;
 
     /**
-     * The list of groups the analysis is listed in.
-     */
-    @Transient
-    private List<AnalysisGroup> groups;
-
-    /**
      * @return the internal analysis identifier
      */
     public long getHid() {
@@ -185,13 +185,6 @@ public class AnalysisListing implements Serializable {
     }
 
     /**
-     * @return the list of groups the analysis is listed in
-     */
-    public List<AnalysisGroup> getAnalysisGroups() {
-        return groups;
-    }
-
-    /**
      * @return the average rating for this analysis.
      */
     public double getAverageRating() {
@@ -210,17 +203,6 @@ public class AnalysisListing implements Serializable {
      */
     public boolean isDisabled() {
         return disabled;
-    }
-
-    /**
-     * Adds a group to the list of groups the analysis is listed in.
-     */
-    public void addAnalysisGroup(AnalysisGroup group) {
-        if (groups == null) {
-            groups = new ArrayList<AnalysisGroup>();
-        }
-
-        groups.add(group);
     }
 
     /**
