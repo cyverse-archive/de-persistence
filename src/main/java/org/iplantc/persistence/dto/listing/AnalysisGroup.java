@@ -232,10 +232,11 @@ public class AnalysisGroup implements Serializable {
      * @return The filtered list of AnalysisListing models.
      */
     public List<AnalysisListing> filterAnalysesByNameOrDesc(Session session, String search) {
-        String filter = "where "
-                        + "lower(this.name) like '%' || lower(:search) || '%'"
-                        + " OR "
-                        + "lower(this.description) like '%' || lower(:search) || '%'";
+        String searchClause = "lower(%1$s) like '%%' || lower(:search) || '%%'";
+
+        String filter = String.format("where this.deleted = false AND (%1$s OR %2$s)",
+                                      String.format(searchClause, "this.name"),
+                                      String.format(searchClause, "this.description"));
 
         Query queryFilter = session.createFilter(analyses, filter);
         queryFilter.setParameter("search", search);
