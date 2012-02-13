@@ -49,6 +49,12 @@ public class RatingListing {
     private Integer userRating;
 
     /**
+     * The comment provided by the current user, if the user has commented on the analysis.
+     */
+    @Column(name = "comment_id")
+    private Long commentId;
+
+    /**
      * @return the analysis identifier.
      */
     public long getAnalysisId() {
@@ -67,5 +73,12 @@ public class RatingListing {
      */
     public Integer getUserRating() {
         return userRating;
+    }
+
+    /**
+     * @return the rating provided by this user, if the user has rated this analysis.
+     */
+    public Long getCommentId() {
+        return commentId;
     }
 }
