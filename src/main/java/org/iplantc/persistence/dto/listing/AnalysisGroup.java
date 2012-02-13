@@ -110,7 +110,7 @@ public class AnalysisGroup implements Serializable {
      * @return the list of analyses.
      */
     public List<AnalysisListing> getAnalyses() {
-        return Collections.unmodifiableList(analyses);
+        return analyses;
     }
 
     /**
@@ -145,7 +145,7 @@ public class AnalysisGroup implements Serializable {
      * @return the list of subgroups
      */
     public List<AnalysisGroup> getSubgroups() {
-        return Collections.unmodifiableList(subgroups);
+        return subgroups;
     }
 
     /**
