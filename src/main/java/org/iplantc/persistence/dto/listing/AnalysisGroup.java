@@ -2,7 +2,6 @@ package org.iplantc.persistence.dto.listing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -110,7 +109,7 @@ public class AnalysisGroup implements Serializable {
      * @return the list of analyses.
      */
     public List<AnalysisListing> getAnalyses() {
-        return Collections.unmodifiableList(analyses);
+        return analyses;
     }
 
     /**
@@ -145,7 +144,7 @@ public class AnalysisGroup implements Serializable {
      * @return the list of subgroups
      */
     public List<AnalysisGroup> getSubgroups() {
-        return Collections.unmodifiableList(subgroups);
+        return subgroups;
     }
 
     /**
@@ -226,31 +225,21 @@ public class AnalysisGroup implements Serializable {
     }
 
     /**
-     * Loads the list of all analyses in this analysis group, and all of its
-     * descendants, filtered by names or descriptions that match the given
-     * search string.
+     * Retrieves a list of analyses in this analysis group, filtered by names or
+     * descriptions that match the given search string.
+     *
+     * @return The filtered list of AnalysisListing models.
      */
-    public void filterAllAnalysesByNameOrDesc(Session session, String search) {
-        String filter = "where "
-                        + "lower(this.name) like '%' || lower(:search) || '%'"
-                        + " OR "
-                        + "lower(this.description) like '%' || lower(:search) || '%'";
+    public List<AnalysisListing> filterAnalysesByNameOrDesc(Session session, String search) {
+        String searchClause = "lower(%1$s) like '%%' || lower(:search) || '%%'";
+
+        String filter = String.format("where this.deleted = false AND (%1$s OR %2$s)",
+                                      String.format(searchClause, "this.name"),
+                                      String.format(searchClause, "this.description"));
 
         Query queryFilter = session.createFilter(analyses, filter);
         queryFilter.setParameter("search", search);
 
-        List<AnalysisListing> result = queryFilter.list();
-
-        for (AnalysisListing analysis : result) {
-            analysis.addAnalysisGroup(this);
-        }
-
-        for (AnalysisGroup subgroup : subgroups) {
-            subgroup.filterAllAnalysesByNameOrDesc(session, search);
-
-            result.addAll(subgroup.getAllAnalyses());
-        }
-
-        allAnalyses = result;
+        return queryFilter.list();
     }
 }
