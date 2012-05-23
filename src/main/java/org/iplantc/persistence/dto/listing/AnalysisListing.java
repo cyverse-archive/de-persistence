@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "analysis_listing")
-public class AnalysisListing implements Serializable {
+public class AnalysisListing implements Serializable, PipelineCandidate {
 
     /**
      * The internal analysis identifier.
@@ -108,6 +108,12 @@ public class AnalysisListing implements Serializable {
     private List<DeployedComponentListing> deployedComponents;
 
     /**
+     * The overall job type for the analysis.
+     */
+    @Column(name = "overall_job_type")
+    private String overallJobTypeName;
+
+    /**
      * @return the internal analysis identifier
      */
     public long getHid() {
@@ -124,6 +130,7 @@ public class AnalysisListing implements Serializable {
     /**
      * @return the external analysis identifier
      */
+    @Override
     public String getId() {
         return id;
     }
@@ -166,6 +173,7 @@ public class AnalysisListing implements Serializable {
     /**
      * @return the number of steps in the analysis
      */
+    @Override
     public long getStepCount() {
         return stepCount;
     }
@@ -203,6 +211,28 @@ public class AnalysisListing implements Serializable {
      */
     public boolean isDisabled() {
         return disabled;
+    }
+
+    /**
+     * @return the name of the overall job type.
+     */
+    public String getOverallJobTypeName() {
+        return overallJobTypeName;
+    }
+
+    /**
+     * @param overallJobTypeName the name of the overall job type.
+     */
+    public void setOverallJobTypeName(String overallJobTypeName) {
+        this.overallJobTypeName = overallJobTypeName;
+    }
+
+    /**
+     * @return the overall job type for this analysis.
+     */
+    @Override
+    public JobType getOverallJobType() {
+        return JobType.fromString(overallJobTypeName);
     }
 
     /**
