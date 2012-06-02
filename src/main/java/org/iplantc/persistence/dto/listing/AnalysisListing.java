@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -17,6 +19,10 @@ import javax.persistence.TemporalType;
  * 
  * @author Dennis Roberts
  */
+@NamedQueries({
+        @NamedQuery(name = "AnalysisListing.findById", query = "from AnalysisListing where hid = :id"),
+        @NamedQuery(name = "AnalysisListing.findByExternalId", query = "from AnalysisListing where id = :id")
+})
 @Entity
 @Table(name = "analysis_listing")
 public class AnalysisListing implements Serializable, PipelineCandidate {
