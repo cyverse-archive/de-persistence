@@ -15,13 +15,14 @@ import javax.persistence.Temporal;
 import org.iplantc.persistence.dto.user.User;
 
 /**
- *
- * @author dennis
+ * Represents a reference genome that is accessible to Condor jobs in the DE.
+ * 
+ * @author Dennis Roberts
  */
 @NamedQueries({
     @NamedQuery(name = "ReferenceGenome.findById", query = "from ReferenceGenome where id = :id"),
     @NamedQuery(name = "ReferenceGenome.findByUuid", query = "from ReferenceGenome where uuid = :id"),
-    @NamedQuery(name = "ReferenceGenome.list", query = "from ReferenceGenome where not deleted order by name")
+    @NamedQuery(name = "ReferenceGenome.list", query = "from ReferenceGenome where deleted is false order by name")
 })
 @Entity
 @Table(name = "genome_reference")
@@ -36,7 +37,7 @@ public class ReferenceGenome implements Serializable {
     /**
      * The external identifier used by other services.
      */
-    @Column(name = "uuid")
+    @Column(name = "uuid", columnDefinition = "bpchar")
     private String uuid;
 
     /**
@@ -68,7 +69,7 @@ public class ReferenceGenome implements Serializable {
      * The date the reference genome was entered.
      */
     @Column(name = "created_on")
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date createdOn;
 
     /**
@@ -82,7 +83,7 @@ public class ReferenceGenome implements Serializable {
      * The date the reference genome was last modified.
      */
     @Column(name = "last_modified_on")
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date lastModifiedOn;
 
     /**
