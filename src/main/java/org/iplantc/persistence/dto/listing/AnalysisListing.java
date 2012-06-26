@@ -71,6 +71,13 @@ public class AnalysisListing implements Serializable, PipelineCandidate {
     private Date integrationDate;
 
     /**
+     * The date when the analysis was last edited.
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "edited_date")
+    private Date editedDate;
+
+    /**
      * The link to the analysis documentation page in the wiki.
      */
     @Column(name = "wikiurl")
@@ -146,6 +153,13 @@ public class AnalysisListing implements Serializable, PipelineCandidate {
      */
     public Date getIntegrationDate() {
         return integrationDate;
+    }
+
+    /**
+     * @return the date when the analysis was last edited.
+     */
+    public Date getEditedDate() {
+        return editedDate;
     }
 
     /**
@@ -274,10 +288,11 @@ public class AnalysisListing implements Serializable, PipelineCandidate {
      */
     @Override
     public String toString() {
-        return "AnalysisListing{" + "hid=" + hid + ", id=" + id + ", name=" + name + ", description=" + description
-                + ", integratorName=" + integratorName + ", integratorEmail=" + integratorEmail + ", integrationDate="
-                + integrationDate + ", wikiUrl=" + wikiUrl + ", averageRating=" + averageRating + ", isPublic="
-                + isPublic + ", stepCount=" + stepCount + ", deleted=" + deleted + ", disabled=" + disabled
-                + ", deployedComponents=" + deployedComponents + '}';
+        return "AnalysisListing{" + "hid=" + hid + ", id=" + id + ", name=" + name + ", description=" + description +
+                ", integratorName=" + integratorName + ", integratorEmail=" + integratorEmail + ", integrationDate=" +
+                integrationDate + ", editedDate=" + editedDate + ", wikiUrl=" + wikiUrl + ", averageRating=" +
+                averageRating + ", isPublic=" + isPublic + ", stepCount=" + stepCount + ", deleted=" + deleted +
+                ", disabled=" + disabled + ", deployedComponents=" + deployedComponents + ", overallJobTypeName=" +
+                overallJobTypeName + '}';
     }
 }
