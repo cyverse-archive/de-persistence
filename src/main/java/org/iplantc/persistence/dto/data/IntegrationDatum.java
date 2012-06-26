@@ -5,6 +5,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -13,6 +15,11 @@ import javax.persistence.Table;
  * @author Kris Healy <healyk@iplantcollaborative.org>
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "IntegrationDatum.findById", query = "from IntegrationDatum where id = :id"),
+        @NamedQuery(name = "IntegrationDatum.findByNameAndEmail",
+					query = "from IntegrationDatum where integratorName = :name and integratorEmail = :email")
+})
 @Table(name = "integration_data")
 public class IntegrationDatum implements Serializable {
 	private Long id;
@@ -61,7 +68,12 @@ public class IntegrationDatum implements Serializable {
 			return false;
 		}
 		final IntegrationDatum other = (IntegrationDatum) obj;
-		if (this.id != other.id) {
+		if ((this.integratorName == null) ? (other.integratorName != null)
+				: !this.integratorName.equals(other.integratorName)) {
+			return false;
+		}
+		if ((this.integratorEmail == null) ? (other.integratorEmail != null)
+				: !this.integratorEmail.equals(other.integratorEmail)) {
 			return false;
 		}
 		return true;
@@ -70,7 +82,8 @@ public class IntegrationDatum implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 3;
-		hash = 89 * hash + (int) (this.id ^ (this.id >>> 32));
+		hash = 37 * hash + (this.integratorName != null ? this.integratorName.hashCode() : 0);
+		hash = 37 * hash + (this.integratorEmail != null ? this.integratorEmail.hashCode() : 0);
 		return hash;
 	}
 }
