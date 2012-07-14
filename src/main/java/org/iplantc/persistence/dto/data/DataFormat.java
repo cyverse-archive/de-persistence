@@ -15,15 +15,16 @@ import org.json.JSONObject;
 
 /**
  * Represents the format of a data object. Some common examples are Nexus, Newick and PDF.
- * 
+ *
  * @author Dennis Roberts
  */
 @NamedQueries({
-	@NamedQuery(name="DataFormat.findByGuid", query="from DataFormat where guid = :guid"),
-	@NamedQuery(name = "DataFormat.findByName", query = "from DataFormat where name = :name")})
+    @NamedQuery(name = "DataFormat.findByGuid", query = "from DataFormat where guid = :guid"),
+    @NamedQuery(name = "DataFormat.findByName", query = "from DataFormat where name = :name")})
 @Entity
 @Table(name = "data_formats")
 public class DataFormat implements RepresentableAsJson {
+
     /**
      * Specifies the relative display order of the data format.
      */
@@ -32,17 +33,16 @@ public class DataFormat implements RepresentableAsJson {
     private String guid;
     private String name;
     private String label;
-    
+
     /**
      * Creates a new empty data format object.
      */
     public DataFormat() {
-        
     }
-    
+
     /**
      * Creates a new data format with the given ID, name, label and description.
-     * 
+     *
      * @param guid the data format identifier.
      * @param name the data format name.
      * @param label the data format label.
@@ -63,8 +63,8 @@ public class DataFormat implements RepresentableAsJson {
         this.guid = guid;
     }
 
-    @SequenceGenerator(name="data_formats_id_seq", sequenceName="data_formats_id_seq")
-	@GeneratedValue(generator="data_formats_id_seq")
+    @SequenceGenerator(name = "data_formats_id_seq", sequenceName = "data_formats_id_seq")
+    @GeneratedValue(generator = "data_formats_id_seq")
     @Id
     public long getId() {
         return id;
@@ -91,7 +91,7 @@ public class DataFormat implements RepresentableAsJson {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * @return the display order.
      */
@@ -99,7 +99,7 @@ public class DataFormat implements RepresentableAsJson {
     public int getDisplayOrder() {
         return displayOrder;
     }
-    
+
     /**
      * @param displayOrder the new display order.
      */
@@ -138,8 +138,7 @@ public class DataFormat implements RepresentableAsJson {
             json.put("name", name);
             json.put("label", label);
             return json;
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             throw new PersistenceException("unable to generate the data format JSON", e);
         }
     }
