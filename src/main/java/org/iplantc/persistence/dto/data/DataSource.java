@@ -6,8 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PersistenceException;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.iplantc.persistence.RepresentableAsJson;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Represents the source of a data object. At the time of class creation, sources could include regular files,
@@ -20,7 +24,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "DataSource.findByName", query = "from DataSource where name = :name")})
 @Entity
 @Table(name = "data_source")
-public class DataSource {
+public class DataSource implements RepresentableAsJson {
 
     /**
      * The internal identifier (primary key).
@@ -63,7 +67,7 @@ public class DataSource {
     /**
      * @return the external data source identifier.
      */
-    @Column(name = "uuid", nullable = false)
+    @Column(name = "uuid", columnDefinition = "bpchar", nullable = false)
     public String getUuid() {
         return uuid;
     }
@@ -148,9 +152,29 @@ public class DataSource {
         return hash;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
-        return "DataSource{" + "id=" + id + ", uuid=" + uuid + ", name=" + name + ", label=" + label + ", description="
-                + description + '}';
+        return toJson().toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JSONObject toJson() {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("hid", id);
+            json.put("id", uuid);
+            json.put("name", name);
+            json.put("label", label);
+            return json;
+        }
+        catch (JSONException e) {
+            throw new PersistenceException("unable to produce the data source JSON", e);
+        }
     }
 }
