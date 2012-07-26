@@ -10,23 +10,23 @@ import org.iplantc.persistence.dto.data.IntegrationDatum;
  * @author Dennis Roberts
  */
 public class HibernateIntegrationDatumDao extends AbstractHibernateDao<IntegrationDatum>
-		implements IntegrationDatumDao {
+        implements IntegrationDatumDao {
 
-	/**
-	 * @param session the Hibernate session.
-	 */
-	public HibernateIntegrationDatumDao(Session session) {
-		super(IntegrationDatum.class, session);
-	}
+    /**
+     * @param session the Hibernate session.
+     */
+    public HibernateIntegrationDatumDao(Session session) {
+        super(IntegrationDatum.class, session);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public IntegrationDatum findByNameAndEmail(String name, String email) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IntegrationDatum findByNameAndEmail(String name, String email) {
         Query query = getNamedQuery("findByNameAndEmail");
         query.setParameter("name", name);
-		query.setParameter("email", email);
+        query.setParameter("email", email);
         return (IntegrationDatum) query.uniqueResult();
-	}
+    }
 }
