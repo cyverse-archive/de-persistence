@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.iplantc.persistence.NamedAndUnique;
 import org.iplantc.persistence.RepresentableAsJson;
 import org.iplantc.persistence.dto.data.DeployedComponentDataFile;
@@ -55,12 +56,6 @@ public class DeployedComponent implements RepresentableAsJson, NamedAndUnique, S
     private String location;
 
     /**
-     * The type of the tool. The only value for this field that is currently
-     * acceptable is "executable".
-     */
-    private String type;
-
-    /**
      * The tool version number as provided by the tool itself.
      */
     private String version;
@@ -73,6 +68,8 @@ public class DeployedComponent implements RepresentableAsJson, NamedAndUnique, S
     private IntegrationDatum integrationDatum;
 
     private Set<DeployedComponentDataFile> deployedComponentDataFiles;
+
+    private ToolType toolType;
 
     /**
      * @return the component identifier.
@@ -134,21 +131,6 @@ public class DeployedComponent implements RepresentableAsJson, NamedAndUnique, S
      */
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    /**
-     * @return the deployed component type.
-     */
-    @Column(name = "type", nullable = false)
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param type the new deployed component type.
-     */
-    public void setType(String type) {
-        this.type = type;
     }
 
     /**
@@ -218,6 +200,24 @@ public class DeployedComponent implements RepresentableAsJson, NamedAndUnique, S
         this.deployedComponentDataFiles = deployedComponentDataFiles;
     }
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(insertable = false, updatable = false, name = "tool_type_id")
+    public ToolType getToolType() {
+        return toolType;
+    }
+
+    public void setToolType(ToolType toolType) {
+        this.toolType = toolType;
+    }
+
+    /**
+     * @return the name of the tool type associated with this deployed component.
+     */
+    @Transient
+    public String getType() {
+        return toolType == null ? "" : toolType.getName();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -230,7 +230,7 @@ public class DeployedComponent implements RepresentableAsJson, NamedAndUnique, S
             json.put("description", description);
             json.put("hid", hid);
             json.put("location", location);
-            json.put("type", type);
+            json.put("type", getType());
             json.put("version", version);
             json.put("attribution", attribution);
         }
