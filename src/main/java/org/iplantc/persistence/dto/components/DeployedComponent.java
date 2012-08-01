@@ -201,7 +201,7 @@ public class DeployedComponent implements RepresentableAsJson, NamedAndUnique, S
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(insertable = false, updatable = false, name = "tool_type_id")
+    @JoinColumn(name = "tool_type_id")
     public ToolType getToolType() {
         return toolType;
     }
