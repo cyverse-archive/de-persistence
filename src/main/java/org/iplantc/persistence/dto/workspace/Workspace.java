@@ -11,6 +11,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.iplantc.persistence.dto.user.User;
 
 /**
@@ -37,11 +38,16 @@ public class Workspace implements Serializable {
      * True if the workspace is visible to everyone.
      */
     private boolean isPublic;
-	
+
 	/**
 	 * User that owns this workspace.
 	 */
 	private User user;
+
+    /**
+     * True if the workspace was just created.
+     */
+    private boolean isNew = false;
 
     /**
      * @return the workspace identifier.
@@ -99,4 +105,13 @@ public class Workspace implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+    @Transient
+    public boolean getIsNew() {
+        return isNew;
+    }
+
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
+    }
 }
