@@ -14,6 +14,16 @@
         <version>1.8.4-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <scm.repo>metadactyl.git</scm.repo>
+    </properties>
+
+    <scm>
+        <connection>scm:git:${scm.base}/${scm.repo}</connection>
+        <developerConnection>scm:git:${scm.base}/${scm.repo}</developerConnection>
+        <url>${scm.base}/${scm.repo}</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.iplantc.core</groupId>
@@ -21,27 +31,4 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>central</id>
-            <name>Maven Repository Switchboard</name>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <url>http://repo1.maven.org/maven2</url>
-        </repository>
-        <repository>
-            <id>iPlant</id>
-            <name>iPlant Collaborative local repository</name>
-            <url>http://projects.iplantcollaborative.org/archiva/repository/internal/</url>
-            <releases>
-                <updatePolicy>daily</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>
