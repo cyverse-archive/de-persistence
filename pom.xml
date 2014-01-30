@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.iplantc.core</groupId>
         <artifactId>base-pom</artifactId>
-        <version>${project.version}</version>
+        <version>1.8.4</version>
     </parent>
 
     <licenses>
